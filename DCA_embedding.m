@@ -5,8 +5,9 @@ clear;
 maxiter = 20;
 restartProb = 0.80;
 nnode = 18362;
-NetList = {'sequence.network'};
-
+NetList = {'test.network'};
+pathway_file = '';
+pathway = dlmread(pathway_file);
 for i = 1 : length(NetList)
     
     tic
@@ -16,7 +17,7 @@ for i = 1 : length(NetList)
     
     
     min(ppi_net(:))
-    pathway = dlmread('Stuart_nci_pathway.txt');
+    
     npathway = max(pathway(:,1));
     
     path_net = sparse(pathway(:,1),pathway(:,2),1,npathway,nnode);
@@ -41,8 +42,8 @@ for i = 1 : length(NetList)
         
         US = U * sqrt(S);
         fprintf('Writing file ...\n');
-        dlmwrite(['../../embedding/',netID,'_net_',num2str(dim),'_',num2str(restartProb),'.U'],U,'delimiter','\t');
-        dlmwrite(['../../embedding/',netID,'_net_',num2str(dim),'_',num2str(restartProb),'.US'],US,'delimiter','\t');
+        dlmwrite([netID,'_net_',num2str(dim),'_',num2str(restartProb),'.U'],U,'delimiter','\t');
+        dlmwrite([netID,'_net_',num2str(dim),'_',num2str(restartProb),'.US'],US,'delimiter','\t');
         
     end
     
