@@ -1,4 +1,4 @@
-# NetPath
+PACER
 The code is written in MATLAB. 
 
 Please run DCA_embedding in the src folder
