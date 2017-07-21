@@ -9,8 +9,8 @@ We need two input files to run the code NetList.
 The first one is a network file (e.g., PPI network, co-expression network). An example is the 'Network.txt' in the data folder.
 
 Format:
->202&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.588<br />
->2173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;202&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.588<br />
+>202&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2173&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.588<br />
+>2173&nbsp;&nbsp;&nbsp;&nbsp;202&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.588<br />
 >204&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;901&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.001<br />
 >901&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;204&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.001<br />
 
