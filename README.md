@@ -9,10 +9,10 @@ We need two input files to run the code NetList.
 The first one is a network file (e.g., PPI network, co-expression network). An example is the 'Network.txt' in the data folder.
 
 Format:
->202	2173	0.588
->2173	202	0.588
->204	901	0.001
->901	204	0.001
+>202\t2173\t0.588<br />
+>2173	202	0.588<br />
+>204	901	0.001<br />
+>901	204	0.001<br />
 
 In each network file, each row contains three numbers, representing an edge in the network. The first two numbers are gene IDs and the third is the edge weight. 
 
