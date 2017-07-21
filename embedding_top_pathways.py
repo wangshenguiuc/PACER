@@ -29,22 +29,22 @@ def compute_drug_path_score(drug, gene_corr_dct, embedding_matrix, path_to_gene_
         the input drug -> float
     '''
     # Get the pathway and gene index lists.
-    pathway_idx_lst = []
+    pathway_lst = []
     f = open(args.path_idx_fname, 'r')
     for line in f:
-        pathway_idx_lst += [int(line.strip())]
+        pathway_lst += [int(line.strip())]
     f.close()
-    gene_idx_lst = []
+    gene_lst = []
     f = open(args.gene_idx_fname, 'r')
     for line in f:
-        gene_idx_lst += [int(line.strip())]
+        gene_lst += [int(line.strip())]
     f.close()
 
     # Assert gene and pathway indices do not overlap.
-    assert len(set(pathway_idx_lst).intersection(gene_idx_lst)) == 0
+    assert len(set(pathway_lst).intersection(gene_lst)) == 0
     # Fetch the embedding matrices for pathways and for genes.
-    pathway_embedding_matrix = embedding_matrix[pathway_idx_lst]
-    gene_embedding_matrix = embedding_matrix[gene_idx_lst]
+    pathway_embedding_matrix = embedding_matrix[pathway_lst]
+    gene_embedding_matrix = embedding_matrix[gene_lst]
 
     # Compute the cosine matrix between all pairs of pathways and genes.
     cosine_matrix = (pathway_embedding_matrix * gene_embedding_matrix.T) / linalg.norm(
@@ -52,14 +52,14 @@ def compute_drug_path_score(drug, gene_corr_dct, embedding_matrix, path_to_gene_
         axis=1)
 
     drug_path_score_dct = {}
-    for path_i, pathway in enumerate(path_to_gene_dct.keys()):
+    for pathway in path_to_gene_dct:
         # Initialize the score.
         drug_path_score = 0.0
-        for gene_i, gene in enumerate(gene_corr_dct.keys()):
+        for gene in gene_corr_dct:
             # Get the correlation between gene and drug response.
             gene_drug_corr = gene_corr_dct[gene]
             # Get the cosine similarity between the pathway and gene.
-            cos = cosine_matrix[path_i, gene_i]
+            cos = cosine_matrix[pathway, gene]
             # Add to the pathway the product between the cosine similarity and the correlation.
             drug_path_score += cos * gene_drug_corr
         drug_path_score_dct[(drug, pathway)] = drug_path_score
@@ -79,9 +79,14 @@ def compute_drug_pathway_scores():
     for each pair.
     '''
     # Read the ordered pathway dictionary mapping pathways to gene sets.
-    with open(args.path_fname, 'r') as fp:
-        path_to_gene_dct = json.load(fp)
-    fp.close()
+    path_to_gene_dct = {}
+    f = open(args.path_fname, 'r'):
+    for line in f:
+        pathway, gene, weight = line.strip()
+        if pathway not in path_to_gene_dct:
+            path_to_gene_dct[pathway] = set([])
+        path_to_gene_dct[pathway].add gene
+    f.close()
 
     # Read the ordered dictionary mapping drugs to the top k correlated genes.
     # Each value is another dictionary mapping each gene to the Pearson correlation.
