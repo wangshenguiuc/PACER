@@ -119,6 +119,8 @@ def parse_args():
         required=True, type=str)
     parser.add_argument('-p', '--path_fname', help='File name of json dictionary mapping pathway names to gene sets.',
         required=True, type=str)
+    parser.add_argument('-d', '--drug_fname', help='File name of json dictionary mapping drugs to gene correlation dictionaries.',
+        required=True, type=str)
     parser.add_argument('-i', '--path_idx_fname', help='File name of pathway indices corresponding to rows in embedding file.',
         required=True, type=str)
     parser.add_argument('-g', '--gene_idx_fname', help='File name of gene indices corresponding to rows in embedding file.',
