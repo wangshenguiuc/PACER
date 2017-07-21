@@ -33,7 +33,8 @@ Running DCA_embedding.m will generate embedding vectors in ./results/ for each g
 Then, please run the Python script to get the final pathway ranking based on the embedding vector.
 
 ```bash
-python embedding_top_pathways.py [-h] -f EMBED_FNAME -p PATH_FNAME -i PATH_IDX_FNAME -g GENE_IDX_FNAME
+python embedding_top_pathways.py [-h] -f EMBED_FNAME -p PATH_FNAME -d DRUG_FNAME -i PATH_IDX_FNAME -g GENE_IDX_FNAME
+
 ```
 
 The tool will soon be integrated into UIUC KnowEng interface.

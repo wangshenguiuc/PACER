@@ -80,12 +80,12 @@ def compute_drug_pathway_scores():
     '''
     # Read the ordered pathway dictionary mapping pathways to gene sets.
     path_to_gene_dct = {}
-    f = open(args.path_fname, 'r'):
+    f = open(args.path_fname, 'r')
     for line in f:
         pathway, gene, weight = line.strip()
         if pathway not in path_to_gene_dct:
             path_to_gene_dct[pathway] = set([])
-        path_to_gene_dct[pathway].add gene
+        path_to_gene_dct[pathway].add(gene)
     f.close()
 
     # Read the ordered dictionary mapping drugs to the top k correlated genes.
