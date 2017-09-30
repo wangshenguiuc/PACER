@@ -37,4 +37,9 @@ python embedding_top_pathways.py [-h] -f EMBED_FNAME -p PATH_FNAME -d DRUG_FNAME
 
 ```
 
+For the sample data, use
+```bash
+python embedding_top_pathways.py -f ./result/Network.txt_net_50_0.5.U -p ./data/pathway_genes.txt -d ./data/drug_gene_correlations.json -i ./data/pathway_indices.txt -g ./data/gene_indices.txt
+```
+
 The tool will soon be integrated into UIUC KnowEng interface.
