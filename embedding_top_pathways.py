@@ -1,4 +1,5 @@
 import argparse
+import json
 import numpy as np
 import operator
 from scipy import linalg
@@ -51,26 +52,32 @@ def compute_drug_path_score(drug, gene_corr_dct, embedding_matrix, path_to_gene_
         pathway_embedding_matrix, axis=1)[:, np.newaxis] / linalg.norm(gene_embedding_matrix,
         axis=1)
 
+    print cosine_matrix
+
     drug_path_score_dct = {}
     for pathway in path_to_gene_dct:
+        path_idx = int(pathway.split('_')[1]) - 1
         # Initialize the score.
         drug_path_score = 0.0
         for gene in gene_corr_dct:
+            gene_idx = int(gene.split('_')[1]) - 1
             # Get the correlation between gene and drug response.
             gene_drug_corr = gene_corr_dct[gene]
             # Get the cosine similarity between the pathway and gene.
-            cos = cosine_matrix[pathway, gene]
+            print path_idx, gene_idx
+            cos = cosine_matrix[path_idx, gene_idx]
             # Add to the pathway the product between the cosine similarity and the correlation.
             drug_path_score += cos * gene_drug_corr
+            print gene_drug_corr, cos
         drug_path_score_dct[(drug, pathway)] = drug_path_score
     return drug_path_score_dct
 
-def write_top_pathway_file(drug_path_score_dct, results_folder):
-    out_fname = './results/top_pathways_%s.txt' % args.embed_fname
+def write_top_pathway_file(drug_path_score_dct):
+    out_fname = './result/top_pathways_%s.txt' % '_'.join(args.embed_fname.split('_')[-2:])
     out = open(out_fname, 'w')
     out.write('Drug\tPathway\tscore\n')
     for (drug, pathway), score in drug_path_score_dct:
-        out.write('%s\t%s\t%f\n' % (drug, pathway, score))
+        out.write('%s\t%s\t%g\n' % (drug, pathway, score))
     out.close()
 
 def compute_drug_pathway_scores():
@@ -82,7 +89,7 @@ def compute_drug_pathway_scores():
     path_to_gene_dct = {}
     f = open(args.path_fname, 'r')
     for line in f:
-        pathway, gene, weight = line.strip()
+        pathway, gene, weight = line.split()
         if pathway not in path_to_gene_dct:
             path_to_gene_dct[pathway] = set([])
         path_to_gene_dct[pathway].add(gene)
@@ -110,16 +117,16 @@ def compute_drug_pathway_scores():
     drug_path_score_dct = sorted(drug_path_score_dct.items(), key=operator.itemgetter(1),
         reverse=True)
     
-    write_top_pathway_file(drug_path_score_dct, results_folder)
+    write_top_pathway_file(drug_path_score_dct)
 
 def parse_args():
     global args
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--embed_fname', help='Input file name for embedding.',
         required=True, type=str)
-    parser.add_argument('-p', '--path_fname', help='File name of json dictionary mapping pathway names to gene sets.',
+    parser.add_argument('-p', '--path_fname', help='File name of pathway names to gene sets.',
         required=True, type=str)
-    parser.add_argument('-d', '--drug_fname', help='File name of json dictionary mapping drugs to gene correlation dictionaries.',
+    parser.add_argument('-d', '--drug_fname', help='File name of drug to gene correlations.',
         required=True, type=str)
     parser.add_argument('-i', '--path_idx_fname', help='File name of pathway indices corresponding to rows in embedding file.',
         required=True, type=str)
